@@ -81,19 +81,30 @@ def get_jobs(keyword, num_jobs, verbose, slp_time):
 
 
             collected_successfully = False
+            try:
+                driver.find_element(By.XPATH, './/div[@class="css-t3xrds e856ufb2"]').click()#click see more to show all content
+            except NoSuchElementException:
+                pass
 
             while not collected_successfully:
                 try:
                     company_name = driver.find_element(By.XPATH, './/div[@class="css-xuk5ye e1tk4kwz5"]').text
+                    print(company_name)
 
                     location = driver.find_element(By.XPATH, './/div[@class="css-56kyx5 e1tk4kwz1"]').text
            
                     job_title = driver.find_element(By.XPATH, './/div[@class="css-1j389vi e1tk4kwz2"]').text
 
-                    job_description = driver.find_element(By.XPATH, './/div[@class="jobDescriptionContent desc"]').text
+                    container = driver.find_element(By.XPATH, './/div[@class="p-std css-1k5huso e856ufb7"]')
+                    job_description = container.text
+                    # print(len(jd))
+                    # job_description=''
+                    # for i in range(len(jd)):
+
+                    #     job_description = job_description+jd[i].text
+                    #     print(job_description, i)
                     collected_successfully = True
-                    i=i+1
-                    print('data selected: ', i)
+                    
                 except:
                     time.sleep(5)
 
