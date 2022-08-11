@@ -10,6 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import pandas as pd
+from sklearn.metrics import average_precision_score
 
 
 
@@ -117,6 +118,13 @@ def get_jobs(keyword, num_jobs, verbose, slp_time):
                 print('salary not found')
             
             try:
+                ave_salary = driver.find_element(By.XPATH, './/div[@class="css-y2jiyn e2u4hf18"]').text
+                print('ave_salary collected')
+            except NoSuchElementException:
+                salary_estimate = -1 #You need to set a "not found value. It's important."
+                print('ave_salary not found')
+
+            try:
                 rating = driver.find_element(By.XPATH, './/span[@data-test="detailRating"]').text
                 print('rating found')
             except NoSuchElementException:
@@ -126,6 +134,7 @@ def get_jobs(keyword, num_jobs, verbose, slp_time):
             if verbose:
                 print("Job Title: {}".format(job_title))
                 print("Salary Estimate: {}".format(salary_estimate))
+                print("Average salary: {}".format(ave_salary))
                 print("Job Description: {}".format(job_description[:500]))
                 print("Rating: {}".format(rating))
                 print("Company Name: {}".format(company_name))
@@ -240,6 +249,7 @@ def get_jobs(keyword, num_jobs, verbose, slp_time):
 
             jobs.append({"Job Title" : job_title,
             "Salary Estimate" : salary_estimate,
+            "Average Salary" : ave_salary,
             "Job Description" : job_description,
             "Rating" : rating,
             "Company Name" : company_name,
